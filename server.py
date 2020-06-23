@@ -5,10 +5,11 @@ import os
 from colorama import Fore, Style
 
 HOST = '0'
-PORT = int(input(Fore.YELLOW + Style.BRIGHT + ('Enter PORT: ')))
 def clear ():
+    global PORT
     if os.name == 'nt':
         os.system ('cls')
+        PORT = int(input(Fore.YELLOW + Style.BRIGHT + ('Enter PORT: ')))
         ip = input('Enter your IPv4 Address(use command " ipconfig "): ')
         print(Fore.YELLOW + Style.BRIGHT + ('use this ip when starting the client-->>  ').upper() + tmp[-3])
         print(Fore.YELLOW + Style.BRIGHT + ('use this PORT when starting the client-->>  ').upper() + str(PORT)) 
@@ -16,6 +17,7 @@ def clear ():
         #tmp = tmp.split()
     else:
         os.system ('clear')
+        PORT = int(input(Fore.YELLOW + Style.BRIGHT + ('Enter PORT: ')))
         tmp = os.popen("ip route show").read()
         tmp = tmp.split()
         if len(tmp) > 16:
