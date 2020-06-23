@@ -1,5 +1,6 @@
 <h1>Socket messenger</h1>
 <code>git clone https://github.com/JoHn-111/socket_messenger.git</code></br>
+<code>pip install -r requirments.txt</code>
 <code>cd socket_messenger</code>
 <h3>Server start:</h3>
 <code>python3 server.py</code>
