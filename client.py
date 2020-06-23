@@ -12,24 +12,25 @@ def clear ():
 
 clear()
 try:
-    HOST = input('enter server address: ')     #'192.168.1.66'
+    HOST = input(Fore.YELLOW + Style.BRIGHT + ('Enter server address(ip): '))
+    PORT = int(input(Fore.YELLOW + Style.BRIGHT + ('Enter server PORT: ')))
+    username = input(Fore.YELLOW + Style.BRIGHT + ('Enter your name: '))
     clear()
-    PORT = 44349
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     sock.connect((HOST, PORT))
-    serv = (HOST, PORT)   #"109.252.72.210"
-
-    print('client connected')
-
+    serv = (HOST, PORT)
+    print(Style.RESET_ALL)
+    print(Fore.GREEN + ('~~client connected~~').upper())
+    print(Style.RESET_ALL)
 
     def send(run, sock, serv):
         while True:
-            message = input('>> ')
+            message = input('> ')
             if len(message) != 0:
+                message = ('| ' + username + ' | => ' + message) 
                 message = str.encode(message)
                 sock.sendto(message, serv)
-                print('message sended')
-                time.sleep(0.2)
+                time.sleep(0.1)
 
     sendT = threading.Thread(target = send, args = ("sendThread", sock, serv))
     sendT.start()
@@ -37,7 +38,7 @@ try:
     while True:
         data = sock.recv(1024)
         data = data.decode()
-        print("=> " + data)
+        print(data)
 
 
     sendT.join()
@@ -45,4 +46,4 @@ try:
 
 except:
     sock.close()
-    print("connection loss...")
+    print(Fore.RED + ("connection loss..."))
