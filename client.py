@@ -42,7 +42,7 @@ try:
 
 
     sendT.join()
-    sock.close()
+
 
 except:
     sock.close()
