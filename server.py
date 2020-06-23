@@ -4,20 +4,20 @@ import threading
 import os
 from colorama import Fore, Style
 
-HOST = '0'
 def clear ():
-    global PORT
+    global PORT, HOST 
     if os.name == 'nt':
         os.system ('cls')
         PORT = int(input(Fore.YELLOW + Style.BRIGHT + ('Enter PORT: ')))
-        ip = input('Enter your IPv4 Address(use command " ipconfig "): ')
-        print(Fore.YELLOW + Style.BRIGHT + ('use this ip when starting the client-->>  ').upper() + str(ip))
+        HOST = input('Enter your IPv4 Address(use command " ipconfig "): ')
+        print(Fore.YELLOW + Style.BRIGHT + ('use this ip when starting the client-->>  ').upper() + str(HOST))
         print(Fore.YELLOW + Style.BRIGHT + ('use this PORT when starting the client-->>  ').upper() + str(PORT)) 
         #tmp = os.popen("ipconfig").read()
         #tmp = tmp.split()
     else:
         os.system ('clear')
         PORT = int(input(Fore.YELLOW + Style.BRIGHT + ('Enter PORT: ')))
+        HOST = '0'
         tmp = os.popen("ip route show").read()
         tmp = tmp.split()
         if len(tmp) > 16:
@@ -29,8 +29,6 @@ def clear ():
 
 clear()
 
-
-
 print(Fore.GREEN + "\n~~SERVER IS RUNNING~~")
 print(Style.RESET_ALL)
 
@@ -40,13 +38,10 @@ try:
     print(Fore.CYAN) 
     number_of_users = int(input('Number of participants: '))
     sock.listen(number_of_users)
-
-    users = []
-    
+    users = []   
+    run_serv = True
 except:
     sock.close()
-
-run_serv = True
 
 def get_message_send(run, conn, addr): #run нужен без него не робит)
     try:
@@ -58,12 +53,13 @@ def get_message_send(run, conn, addr): #run нужен без него не ро
             if data != '':
                 printdata = data.decode()               
                 print(printdata)
-
+    
             for user in users:
                 if user != conn:
                     user.send(data)
     except:
         sock.close()
+
 try:
     while run_serv:
         conn, addr = sock.accept()
@@ -71,7 +67,7 @@ try:
         gsmT.start()    
         if addr not in users:
             users.append(conn)
-except:
+except:  
     sock.close()
     print(Style.RESET_ALL)
     print(Fore.RED + "\n~~SERVER IS STOPPED~~")
