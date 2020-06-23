@@ -9,9 +9,11 @@ PORT = int(input(Fore.YELLOW + Style.BRIGHT + ('Enter PORT: ')))
 def clear ():
     if os.name == 'nt':
         os.system ('cls')
+        ip = input('Enter your IPv4 Address(use command " ipconfig "): ')
+        print(Fore.YELLOW + Style.BRIGHT + ('use this ip when starting the client-->>  ').upper() + tmp[-3])
+        print(Fore.YELLOW + Style.BRIGHT + ('use this PORT when starting the client-->>  ').upper() + str(PORT)) 
         #tmp = os.popen("ipconfig").read()
         #tmp = tmp.split()
-        #print(tmp[-3])
     else:
         os.system ('clear')
         tmp = os.popen("ip route show").read()
