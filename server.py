@@ -3,24 +3,28 @@ import time
 import threading
 import os
 from colorama import Fore, Style
-import sys
 
 HOST = '0'
-PORT = 44347
+PORT = int(input(Fore.YELLOW + Style.BRIGHT + ('Enter PORT: ')))
 def clear ():
     if os.name == 'nt':
         os.system ('cls')
+        #tmp = os.popen("ipconfig").read()
+        #tmp = tmp.split()
+        #print(tmp[-3])
     else:
         os.system ('clear')
+        tmp = os.popen("ip route show").read()
+        tmp = tmp.split()
+        if len(tmp) > 16:
+            print(Fore.YELLOW + Style.BRIGHT + ('use this ip when starting the client-->>  ').upper() + tmp[-3])
+            print(Fore.YELLOW + Style.BRIGHT + ('use this PORT when starting the client-->>  ').upper() + str(PORT))  
+        else:
+            print(Fore.YELLOW + Style.BRIGHT + ('use this ip when starting the client-->>  ').upper() + tmp[-1])   
+            print(Fore.YELLOW + Style.BRIGHT + ('use this PORT when starting the client-->>  ').upper() + str(PORT))   
 
 clear()
 
-tmp = os.popen("ip route show").read()
-print(os.name)
-print(tmp)
-tmp = tmp.split()
-print(tmp)
-print(tmp[-3])
 
 
 print(Fore.GREEN + "\n~~SERVER IS RUNNING~~")
@@ -49,7 +53,8 @@ def get_message_send(run, conn, addr): #run нужен без него не ро
                 break
             if data != '':
                 printdata = data.decode()               
-                print(str(addr[1]) + " -> " + printdata)      
+                print(printdata)
+
             for user in users:
                 if user != conn:
                     user.send(data)
@@ -66,4 +71,3 @@ except:
     sock.close()
     print(Style.RESET_ALL)
     print(Fore.RED + "\n~~SERVER IS STOPPED~~")
-
