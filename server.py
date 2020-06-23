@@ -11,7 +11,7 @@ def clear ():
         os.system ('cls')
         PORT = int(input(Fore.YELLOW + Style.BRIGHT + ('Enter PORT: ')))
         ip = input('Enter your IPv4 Address(use command " ipconfig "): ')
-        print(Fore.YELLOW + Style.BRIGHT + ('use this ip when starting the client-->>  ').upper() + tmp[-3])
+        print(Fore.YELLOW + Style.BRIGHT + ('use this ip when starting the client-->>  ').upper() + str(ip))
         print(Fore.YELLOW + Style.BRIGHT + ('use this PORT when starting the client-->>  ').upper() + str(PORT)) 
         #tmp = os.popen("ipconfig").read()
         #tmp = tmp.split()
