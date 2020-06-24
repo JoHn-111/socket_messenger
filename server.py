@@ -53,7 +53,6 @@ def get_message_send(run, conn, addr): #run нужен без него не ро
                 printdata = data.decode() 
                 connect = printdata
                 connect_split = connect.split()
-                print(connect_split)
                 if connect_split[-1] == 'connected}':
                     print(Fore.GREEN + printdata)
                     connect_split.clear()
