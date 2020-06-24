@@ -11,9 +11,7 @@ def clear ():
         PORT = int(input(Fore.YELLOW + Style.BRIGHT + ('Enter PORT: ')))
         HOST = input('Enter your IPv4 Address(use command " ipconfig "): ')
         print(Fore.YELLOW + Style.BRIGHT + ('use this ip when starting the client-->>  ').upper() + str(HOST))
-        print(Fore.YELLOW + Style.BRIGHT + ('use this PORT when starting the client-->>  ').upper() + str(PORT)) 
-        #tmp = os.popen("ipconfig").read()
-        #tmp = tmp.split()
+        print(Fore.YELLOW + Style.BRIGHT + ('use this PORT when starting the client-->>  ').upper() + str(PORT))
     else:
         os.system ('clear')
         PORT = int(input(Fore.YELLOW + Style.BRIGHT + ('Enter PORT: ')))
@@ -28,15 +26,16 @@ def clear ():
             print(Fore.YELLOW + Style.BRIGHT + ('use this PORT when starting the client-->>  ').upper() + str(PORT))   
 
 clear()
-
-print(Fore.GREEN + "\n~~SERVER IS RUNNING~~")
-print(Style.RESET_ALL)
-
 try:
+    number_of_users = int(input('Number of participants: '))
+    print(Fore.GREEN + "\n~~SERVER IS RUNNING~~")
+    print(Style.RESET_ALL)
+
+
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     sock.bind((HOST, PORT))
     print(Fore.CYAN) 
-    number_of_users = int(input('Number of participants: '))
+    
     sock.listen(number_of_users)
     users = []   
     run_serv = True
@@ -51,8 +50,16 @@ def get_message_send(run, conn, addr): #run нужен без него не ро
             if not data:
                 break
             if data != '':
-                printdata = data.decode()               
-                print(printdata)
+                printdata = data.decode() 
+                connect = printdata
+                connect_split = connect.split()
+                print(connect_split)
+                if connect_split[-1] == 'connected}':
+                    print(Fore.GREEN + printdata)
+                    connect_split.clear()
+                    print(Fore.CYAN)
+                else:            
+                    print(printdata)
     
             for user in users:
                 if user != conn:
