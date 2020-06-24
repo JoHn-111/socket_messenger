@@ -4,77 +4,60 @@ import threading
 import os
 from colorama import Fore, Style
 
+br = False
+
 def clear ():
-    global PORT, HOST 
     if os.name == 'nt':
         os.system ('cls')
-        PORT = int(input(Fore.YELLOW + Style.BRIGHT + ('Enter PORT: ')))
-        HOST = input('Enter your IPv4 Address(use command " ipconfig "): ')
-        print(Fore.YELLOW + Style.BRIGHT + ('use this ip when starting the client-->>  ').upper() + str(HOST))
-        print(Fore.YELLOW + Style.BRIGHT + ('use this PORT when starting the client-->>  ').upper() + str(PORT))
     else:
         os.system ('clear')
-        PORT = int(input(Fore.YELLOW + Style.BRIGHT + ('Enter PORT: ')))
-        HOST = '0'
-        tmp = os.popen("ip route show").read()
-        tmp = tmp.split()
-        if len(tmp) > 16:
-            print(Fore.YELLOW + Style.BRIGHT + ('use this ip when starting the client-->>  ').upper() + tmp[-3])
-            print(Fore.YELLOW + Style.BRIGHT + ('use this PORT when starting the client-->>  ').upper() + str(PORT))  
-        else:
-            print(Fore.YELLOW + Style.BRIGHT + ('use this ip when starting the client-->>  ').upper() + tmp[-1])   
-            print(Fore.YELLOW + Style.BRIGHT + ('use this PORT when starting the client-->>  ').upper() + str(PORT))   
 
 clear()
 try:
-    number_of_users = int(input('Number of participants: '))
-    print(Fore.GREEN + "\n~~SERVER IS RUNNING~~")
-    print(Style.RESET_ALL)
-
-
+    HOST = input(Fore.YELLOW + Style.BRIGHT + ('Enter server address(ip): '))
+    PORT = int(input(Fore.YELLOW + Style.BRIGHT + ('Enter server PORT: ')))
+    username = input(Fore.YELLOW + Style.BRIGHT + ('Enter your name: '))
+    clear()
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    sock.bind((HOST, PORT))
-    print(Fore.CYAN) 
-    
-    sock.listen(number_of_users)
-    users = []   
-    run_serv = True
-except:
-    sock.close()
-
-def get_message_send(run, conn, addr): #run нужен без него не робит)
-    try:
-        run_serv = True
-        while run_serv:
-            data = conn.recv(1024)
-            if not data:
-                break
-            if data != '':
-                printdata = data.decode() 
-                connect = printdata
-                connect_split = connect.split()
-                print(connect_split)
-                if connect_split[-1] == 'connected}':
-                    print(Fore.GREEN + printdata)
-                    connect_split.clear()
-                    print(Fore.CYAN)
-                else:            
-                    print(printdata)
-    
-            for user in users:
-                if user != conn:
-                    user.send(data)
-    except:
-        sock.close()
-
-try:
-    while run_serv:
-        conn, addr = sock.accept()
-        gsmT = threading.Thread(target = get_message_send, args = ("get_message_sendThread",conn, addr))
-        gsmT.start()    
-        if addr not in users:
-            users.append(conn)
-except:  
-    sock.close()
+    sock.connect((HOST, PORT))
+    serv = (HOST, PORT)
     print(Style.RESET_ALL)
-    print(Fore.RED + "\n~~SERVER IS STOPPED~~")
+    print(Fore.GREEN + ('~~client connected~~').upper())
+    msgsend = '{' + username + ' connected}'
+    msgsend = str.encode(msgsend)
+    sock.sendto(msgsend, serv)
+    print(Style.RESET_ALL)
+
+    def send(run, sock, serv):
+        while True:
+            print(Fore.CYAN)
+            message = input('~ ')
+            if len(message) != 0:
+                message = ('| ' + username + ' | => ' + message) 
+                message = str.encode(message)
+                sock.sendto(message, serv)
+                time.sleep(0.1)
+            print(Style.RESET_ALL)
+            if br == True:
+                break
+
+    sendT = threading.Thread(target = send, args = ("sendThread", sock, serv))
+    sendT.start()
+
+    while True:
+        data = sock.recv(1024)
+        data = data.decode()
+        connect_split = data.split()
+        if connect_split[-1] == 'connected}':
+            print(Fore.GREEN + printdata)
+            connect_split.clear()
+        else:    
+            print(Fore.MAGENTA + ('\n' + data))
+            print(Style.RESET_ALL)
+        if br == True:
+            break
+    sendT.join()
+
+except:
+    br = True
+    print(Fore.RED + ("connection loss..."))
