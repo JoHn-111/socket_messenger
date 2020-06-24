@@ -7,12 +7,12 @@
 <code>pip install -r requirments.txt</code>
 <h3>Server start:</h3>
 <p>First you need to start the server:</p>
-<code>python3 server.py</code></br>
+<code>python3 server.py</code></br></br>
 <p>Enter a free port (in the interval 2000-60000)</p>
 <p><img src="images/serv.png" alt="serverimg"></p>
 <h3>Client start:</h3>
 <p>(launch the client in a new terminal window or on another device)</p>
-<code>python3 client.py</code></br>
+<code>python3 client.py</code></br></br>
 <p>Enter the server address (ip)</p>
 <p>Enter the server port</p>
 <p>Enter a name</p>
