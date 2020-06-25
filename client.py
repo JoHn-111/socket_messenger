@@ -49,7 +49,7 @@ try:
         data = data.decode()
         connect_split = data.split()
         if connect_split[-1] == 'connected}':
-            print(Fore.GREEN + printdata)
+            print(Fore.GREEN + data)
             connect_split.clear()
         else:    
             print(Fore.MAGENTA + ('\n' + data))
