@@ -66,13 +66,17 @@ def get_message_send(run, conn, addr): #run нужен без него не ро
     except:
         sock.close()
 
+
 try:
     while run_serv:
-        conn, addr = sock.accept()
-        gsmT = threading.Thread(target = get_message_send, args = ("get_message_sendThread",conn, addr))
-        gsmT.start()    
-        if addr not in users:
-            users.append(conn)
+        try:
+            conn, addr = sock.accept()
+            gsmT = threading.Thread(target = get_message_send, args = ("get_message_sendThread",conn, addr))
+            gsmT.start()    
+            if addr not in users:
+                users.append(conn)
+        except:
+            pass
 except:  
     sock.close()
     print(Style.RESET_ALL)
