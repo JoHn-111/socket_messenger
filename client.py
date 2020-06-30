@@ -53,6 +53,7 @@ try:
             connect_split.clear()
         else:    
             print(Fore.MAGENTA + ('\n' + data))
+            print(Fore.CYAN)
         if br == True:
             break
     sendT.join()
