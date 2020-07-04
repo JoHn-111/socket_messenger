@@ -3,6 +3,20 @@ import time
 import threading
 import os
 from colorama import Fore, Style
+import sqlite3
+
+
+db = sqlite3.connect('datab.db', check_same_thread = False)
+c = db.cursor()
+
+
+c.execute("DROP TABLE IF EXISTS datab")
+c.execute('''CREATE TABLE datab(   
+    username TEXT,
+    message TEXT,
+    send_time TEXT 
+)''')
+db.commit()
 
 def clear ():
     global PORT, HOST 
@@ -37,47 +51,50 @@ try:
     print(Fore.CYAN) 
     
     sock.listen(number_of_users)
-    users = []   
+    users = []
     run_serv = True
 except:
     sock.close()
 
-def get_message_send(run, conn, addr): #run нужен без него не робит)
-    try:
-        run_serv = True
-        while run_serv:
+def get_message_send(run, conn, addr): #run нужен без него не робит)    
+    run_serv = True
+    while run_serv:
+        try:
             data = conn.recv(1024)
+            send_time = time.strftime("%Y-%m-%d~%H.%M.%S", time.localtime())
             if not data:
                 break
             if data != '':
                 printdata = data.decode() 
-                connect = printdata
-                connect_split = connect.split()
-                if connect_split[-1] == 'connected}':
+                connect_split = printdata.split()
+                if connect_split[-2] == 'connected':
                     print(Fore.GREEN + printdata)
                     connect_split.clear()
                     print(Fore.CYAN)
-                else:            
+                else:
+                    username = str(connect_split[1])
+                    message = (connect_split[4::])
+                    message = (' '.join(message))
+                    c.execute("INSERT INTO datab VALUES (?, ?, ?)", (username, message, send_time))
+                    db.commit()
                     print(printdata)
-    
-            for user in users:
-                if user != conn:
-                    user.send(data)
-    except:
-        sock.close()
-
+                for user in users:
+                    if user != conn:
+                        user.send(data)
+        except:
+            pass
 
 try:
     while run_serv:
         try:
             conn, addr = sock.accept()
-            gsmT = threading.Thread(target = get_message_send, args = ("get_message_sendThread",conn, addr))
+            gsmT = threading.Thread(target = get_message_send, args = ("get_message_sendThread", conn, addr))
             gsmT.start()    
             if addr not in users:
                 users.append(conn)
         except:
             pass
-except:  
+except Exception:  
     sock.close()
     print(Style.RESET_ALL)
     print(Fore.RED + "\n~~SERVER IS STOPPED~~")
