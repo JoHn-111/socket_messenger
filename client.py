@@ -45,9 +45,6 @@ try:
                 print(Fore.RED + ('Unicode decode error'))
                 print(Style.RESET_ALL)
 
-
-
-
     sendT = threading.Thread(target = send, args = ("sendThread", sock, serv))
     sendT.start()
 
