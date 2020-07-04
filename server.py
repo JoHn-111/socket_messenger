@@ -61,7 +61,7 @@ def get_message_send(run, conn, addr): #run нужен без него не ро
     while run_serv:
         try:
             data = conn.recv(1024)
-            send_time = time.strftime("%Y-%m-%d~%H.%M.%S", time.localtime())
+            send_time = time.strftime("%Y-%m-%d~%H:%M:%S", time.localtime())
             if not data:
                 break
             if data != '':
