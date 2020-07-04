@@ -23,7 +23,7 @@ try:
     serv = (HOST, PORT)
     print(Style.RESET_ALL)
     print(Fore.GREEN + ('~~client connected~~').upper())
-    msgsend = '{' + username + ' connected}'
+    msgsend = '{ ' + username + ' connected }'
     msgsend = str.encode(msgsend)
     sock.sendto(msgsend, serv)
     print(Style.RESET_ALL)
