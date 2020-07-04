@@ -31,15 +31,22 @@ try:
     def send(run, sock, serv):
         while True:
             print(Fore.CYAN)
-            message = input('~ ')
-            if len(message) != 0:
-                message = ('| ' + username + ' | => ' + message) 
-                message = str.encode(message)
-                sock.sendto(message, serv)
-                time.sleep(0.1)
-            print(Style.RESET_ALL)
-            if br == True:
-                break
+            try:
+                message = input('~ ')
+                if len(message) != 0:
+                    message = ('| ' + username + ' | => ' + message) 
+                    message = str.encode(message)
+                    sock.sendto(message, serv)
+                    time.sleep(0.1)
+                print(Style.RESET_ALL)
+                if br == True:
+                    break
+            except UnicodeDecodeError:
+                print(Fore.RED + ('Unicode decode error'))
+                print(Style.RESET_ALL)
+
+
+
 
     sendT = threading.Thread(target = send, args = ("sendThread", sock, serv))
     sendT.start()
