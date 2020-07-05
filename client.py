@@ -4,7 +4,6 @@ import threading
 import os
 from colorama import Fore, Style
 
-br = False
 
 def clear ():
     if os.name == 'nt':
@@ -13,6 +12,9 @@ def clear ():
         os.system ('clear')
 
 clear()
+
+br = False
+
 try:
     HOST = input(Fore.YELLOW + Style.BRIGHT + ('Enter server address(ip): '))
     PORT = int(input(Fore.YELLOW + Style.BRIGHT + ('Enter server PORT: ')))
@@ -41,6 +43,7 @@ try:
                 print(Style.RESET_ALL)
                 if br == True:
                     break
+                    
             except UnicodeDecodeError:
                 print(Fore.RED + ('Unicode decode error'))
                 print(Style.RESET_ALL)
