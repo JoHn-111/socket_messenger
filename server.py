@@ -8,8 +8,6 @@ import sqlite3
 
 db = sqlite3.connect('datab.db', check_same_thread = False)
 c = db.cursor()
-
-
 c.execute("DROP TABLE IF EXISTS datab")
 c.execute('''CREATE TABLE datab(   
     username TEXT,
@@ -40,6 +38,7 @@ def clear ():
             print(Fore.YELLOW + Style.BRIGHT + ('use this PORT when starting the client-->>  ').upper() + str(PORT))   
 
 clear()
+
 try:
     number_of_users = int(input('Number of participants: '))
     print(Fore.GREEN + "\n~~SERVER IS RUNNING~~")
@@ -81,6 +80,7 @@ def get_message_send(run, conn, addr): #run нужен без него не ро
                 for user in users:
                     if user != conn:
                         user.send(data)
+                        
         except:
             pass
 
@@ -92,8 +92,10 @@ try:
             gsmT.start()    
             if addr not in users:
                 users.append(conn)
+                
         except:
             pass
+        
 except Exception:  
     sock.close()
     print(Style.RESET_ALL)
