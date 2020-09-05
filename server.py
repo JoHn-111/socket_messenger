@@ -55,7 +55,7 @@ try:
 except:
     sock.close()
 
-def get_message_send(run, conn, addr): #run нужен без него не робит)    
+def get_message_send(run, conn, addr):
     run_serv = True
     while run_serv:
         try:
