@@ -27,7 +27,7 @@ def clear ():
     else:
         os.system ('clear')
         PORT = int(input(Fore.YELLOW + Style.BRIGHT + ('Enter PORT: ')))
-        HOST = '0'
+        HOST = ''
         tmp = os.popen("ip route show").read()
         tmp = tmp.split()
         if len(tmp) > 16:
